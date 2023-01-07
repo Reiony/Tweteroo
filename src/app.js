@@ -4,38 +4,48 @@ import cors from "cors";
 const Server = express();
 const PORT = 5000;
 
-let ArrayUser = []
-/* let ArrayTweet = [] */
 
 Server.use(cors());
 Server.use(express.json());
 
+const ArrayUser = []
+const ArrayTweets = [] 
 
 
 Server.post("/sign-up", (req, res)=> {
-    const {user, avatar} = req.body
+    const {username, avatar} = req.body
 
-    if (!user || !avatar){
-        res.status(400).send("Todos os campos são obrigatórios!");
+    if (!username || !avatar){
+        res.status(400).send("Todos os campos são obrigatórios!")
         return
     }
 
-    const userinfo = {
-        user,
+    const userdata = {
+        username,
         avatar
     }
 
-    ArrayUser.push(userinfo)
-    res.status(201).send({message: "OK"});
+    ArrayUser.push(userdata)
+    res.status(201).send({message: "OK"})
 
 })
 
-/* Server.post("/tweets", (req, res)=> {
-    if (!user || !tweet){
-        res.status(400).send("Todos os campos são obrigatórios!");
+Server.post("/tweets", (req, res)=> {
+    const {username, tweet} = req.body
+    if (!username || !tweet){
+        res.status(400).send("Todos os campos são obrigatórios!")
         return
     }
-}) */
+    ArrayTweets.push({ username, tweet })
+    res.status(201).send({message: "OK"})
+});
 
+Server.get("/tweets",(req,res)=>{
+    ArrayTweets.forEach((tweet)=>{
+        const { avatar } = ArrayUser.find((user) => user.username === tweet.username )
+        tweet.avatar = avatar;
+    })
+    res.status(201).send(ArrayTweets.reverse().slice(10));
+});
 
-Server.listen(PORT, console.log(`Servidor Rodando na porta ${PORT}`))
+Server.listen(PORT, console.log(`Servidor rodando na Porta: ${PORT}`));
