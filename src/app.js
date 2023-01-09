@@ -36,7 +36,8 @@ Server.post("/sign-up", (req, res)=> {
 })
 
 Server.post("/tweets", (req, res)=> {
-    const {username, tweet} = req.body;
+    const {tweet} = req.body;
+    const {username} = req.headers;
     if (!username || !tweet){
         res.status(400).send("Todos os campos são obrigatórios!")
         return
@@ -44,7 +45,11 @@ Server.post("/tweets", (req, res)=> {
     const UserAlreadyExists = ArrayUser.find ((user)=> user.username === username);
 
     if (!UserAlreadyExists){
-        res.status(401).send("Usuário não foi cadastrado!")
+        res.status(401).send("Usuário não cadastrado!")
+        return
+    }
+    if (typeof tweets !== "string"){
+        res.status(400).send("Formato para tweet inválido")
         return
     }
     ArrayTweets.push({ username, tweet })
