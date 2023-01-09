@@ -20,6 +20,13 @@ Server.post("/sign-up", (req, res)=> {
         return
     }
 
+    const UserAlreadyExists = ArrayUser.find ((user)=> user.username === username);
+
+    if (UserAlreadyExists){
+        res.status(400).send("Usuário já existe!")
+        return
+    }
+
     const userdata = {
         username,
         avatar
@@ -45,7 +52,7 @@ Server.get("/tweets",(req,res)=>{
         const { avatar } = ArrayUser.find((user) => user.username === tweet.username )
         tweet.avatar = avatar;
     })
-    res.status(201).send(ArrayTweets.reverse().slice(10));
+    res.status(201).send(ArrayTweets.slice(-10).reverse);
 });
 
 Server.listen(PORT, console.log(`Servidor rodando na Porta: ${PORT}`));
