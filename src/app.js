@@ -15,7 +15,7 @@ const ArrayTweets = []
 Server.post("/sign-up", (req, res)=> {
     const {username, avatar} = req.body
 
-    if (!username || !avatar || (!typeof username === "string")|| (!typeof avatar === "string")){
+    if (!username || !avatar){
         res.status(400).send("Todos os campos são obrigatórios!")
         return
     }
@@ -38,9 +38,9 @@ Server.post("/sign-up", (req, res)=> {
 })
 
 Server.post("/tweets", (req, res)=> {
-    const {username, tweet} = req.body
+    const {username, tweet} = req.body;
     if (!username || !tweet){
-        res.sendStatus(401)
+        res.status(401).send("UNAUTHORIZED");
         return
     }
     ArrayTweets.push({ username, tweet })
