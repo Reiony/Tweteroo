@@ -15,8 +15,13 @@ const ArrayTweets = []
 Server.post("/sign-up", (req, res)=> {
     const {username, avatar} = req.body
 
-    if (!username || !avatar){
+    if (!username || !avatar ){
         res.status(400).send("Todos os campos são obrigatórios!")
+        return
+    }
+
+    if (typeof username !== "string"|| typeof avatar !== "string"){
+        res.status(400).send("Usuário ou Avatar inválidos")
         return
     }
 
@@ -43,7 +48,7 @@ Server.post("/tweets", (req, res)=> {
         return
     }
     ArrayTweets.push({ username, tweet })
-    res.status(200).send({message: "OK"})
+    res.status(201).send({message: "OK"})
 });
 
 Server.get("/tweets",(req,res)=>{
