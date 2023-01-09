@@ -40,11 +40,11 @@ Server.post("/sign-up", (req, res)=> {
 Server.post("/tweets", (req, res)=> {
     const {username, tweet} = req.body;
     if (!username || !tweet){
-        res.status(401).send("UNAUTHORIZED");
+        res.status(400).send("Todos os campos são obrigatórios!")
         return
     }
     ArrayTweets.push({ username, tweet })
-    res.status(201).send({message: "OK"})
+    res.status(200).send({message: "OK"})
 });
 
 Server.get("/tweets",(req,res)=>{
