@@ -15,7 +15,7 @@ const ArrayTweets = []
 Server.post("/sign-up", (req, res)=> {
     const {username, avatar} = req.body
 
-    if (!username || !avatar){
+    if (!username || !avatar || (!typeof username === "string")|| (!typeof avatar === "string")){
         res.status(400).send("Todos os campos são obrigatórios!")
         return
     }
@@ -40,7 +40,7 @@ Server.post("/sign-up", (req, res)=> {
 Server.post("/tweets", (req, res)=> {
     const {username, tweet} = req.body
     if (!username || !tweet){
-        res.status(400).send("Todos os campos são obrigatórios!")
+        res.sendStatus(401)
         return
     }
     ArrayTweets.push({ username, tweet })
@@ -52,7 +52,7 @@ Server.get("/tweets",(req,res)=>{
         const { avatar } = ArrayUser.find((user) => user.username === tweet.username )
         tweet.avatar = avatar;
     })
-    res.status(201).send(ArrayTweets.slice(-10).reverse);
+    res.status(200).send(ArrayTweets.slice(-10).reverse());
 });
 
 Server.listen(PORT, console.log(`Servidor rodando na Porta: ${PORT}`));
