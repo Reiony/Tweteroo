@@ -48,10 +48,6 @@ Server.post("/tweets", (req, res)=> {
         res.status(401).send("Usuário não cadastrado!")
         return
     }
-    if (typeof tweet !== "string"){
-        res.status(400).send("Formato para tweet inválido")
-        return
-    }
     ArrayTweets.push({ username, tweet })
     res.status(201).send({message: "OK"})
 });
