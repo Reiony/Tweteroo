@@ -20,13 +20,6 @@ Server.post("/sign-up", (req, res)=> {
         return
     }
 
-    const UserAlreadyExists = ArrayUser.find ((user)=> user.username === username);
-
-    if (UserAlreadyExists){
-        res.status(400).send("Usuário já existe!")
-        return
-    }
-
     const userdata = {
         username,
         avatar
@@ -41,6 +34,12 @@ Server.post("/tweets", (req, res)=> {
     const {username, tweet} = req.body;
     if (!username || !tweet){
         res.status(400).send("Todos os campos são obrigatórios!")
+        return
+    }
+    const UserAlreadyExists = ArrayUser.find ((user)=> user.username === username);
+
+    if (!UserAlreadyExists){
+        res.status(401).send("Usuário não foi cadastrado!")
         return
     }
     ArrayTweets.push({ username, tweet })
